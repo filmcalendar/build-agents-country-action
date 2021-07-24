@@ -14,13 +14,13 @@ data_repo=https://${GIT_PASSWORD}@${GIT_HOST}/${GIT_REPO_DATA}.git
 git clone "${data_repo}" "${data_dir}"
 
 # list agents found on country app
-agents=$(fc-agent list "$@")
+agents=$(node fc-agent.js list "$@")
 IFS=',' read -r -a agents_list <<< "$agents"
 for agent in "${agents_list[@]}"; do
   echo "fc-agent scrape -a ${agent}"
   mkdir -p "${data_dir}/${agent}"
   # spawn a new agent every 10secs
-  fc-agent scrape -a "${agent}" > "${data_dir}/${agent}/data.json" &
+  node fc-agent.js scrape -a "${agent}" > "${data_dir}/${agent}/data.json" &
   sleep 10
 done
 

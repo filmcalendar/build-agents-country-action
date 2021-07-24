@@ -8,11 +8,10 @@ WORKDIR /app
 COPY package.json /app
 RUN npm install --production --no-audit
 
-COPY .bin/fc-agent.cjs /app/.bin/fc-agent.cjs
-COPY .bin/fc-agent.cjs.map /app/.bin/fc-agent.cjs.map
+COPY .bin/fc-agent.js /app/fc-agent.js
+COPY .bin/fc-agent.js.map /app/fc-agent.js.map
 COPY fc-agents-init.sh /app/
-RUN chmod +x /app/.bin/fc-agent.cjs && \
-    chmod +x /app/fc-agents-init.sh && \
+RUN chmod +x /app/fc-agents-init.sh && \
     npm link && \
     mkdir -p /app/data 
 ENV PATH="/app:${PATH}"
