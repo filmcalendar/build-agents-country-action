@@ -9,6 +9,9 @@ inputs:
     required: true
     description: Github token
 
+env:
+  GIT_PASSWORD: ${{ secrets.GIT_PASSWORD }}
+
 runs:
   using: composite
   steps:
@@ -17,7 +20,7 @@ runs:
         cp ${{ github.action_path }}/.dockerignore . |
         cp ${{ github.action_path }}/fc-agents-init.sh .
       shell: bash
-    - run: docker build --tag ghcr.io/filmcalendar/fc-agents-${{ inputs.country }}:latest .
+    - run: docker build --build-arg GIT_PASSWORD --tag ghcr.io/filmcalendar/fc-agents-${{ inputs.country }}:latest .
       shell: bash
     - run: echo ${{ inputs.dockerRegistryPassword }} | docker login ghcr.io --username ${{ github.actor }} --password-stdin
       shell: bash
