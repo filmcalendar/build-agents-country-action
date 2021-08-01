@@ -30,7 +30,7 @@ jobs:
         uses: filmcalendar/build-agents-action@v1
         with:
           country: uk
-          dockerRegistryPassword: ${{ secrets.GH_TOKEN }}
+          dockerRegistryPassword: ${{ secrets.GIT_PASSWORD }}
 ```
 
 ## Contribute

@@ -10,7 +10,7 @@ echo "Once upon a time..."
 # data local dir and repo
 data_dir="data"
 mkdir -p "${data_dir}"
-data_repo=https://${GIT_PASSWORD}@${GIT_HOST}/${GIT_REPO_DATA}.git
+data_repo=https://${GIT_PASSWORD}@github.com/${GIT_REPO_DATA}.git
 git clone "${data_repo}" "${data_dir}"
 
 # list agents found on country app
