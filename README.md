@@ -1,4 +1,6 @@
-# build-agents-action
+# @filmcalendar/build-agents-action
+
+Builds a country's agent docker image.
 
 ## Configuration
 
