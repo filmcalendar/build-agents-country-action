@@ -6,10 +6,10 @@ Builds a country's agent docker image.
 
 **Action inputs**
 
-|                          | default |
-| ------------------------ | ------- |
-| `country`                |         |
-| `dockerRegistryPassword` |         |
+|                  | default |
+| ---------------- | ------- |
+| `country`        |         |
+| `githubPassword` |         |
 
 ## Usage
 
@@ -32,7 +32,7 @@ jobs:
         uses: filmcalendar/build-agents-action@v1
         with:
           country: uk
-          dockerRegistryPassword: ${{ secrets.GIT_PASSWORD }}
+          githubPassword: ${{ secrets.GIT_PASSWORD }}
 ```
 
 ## Contribute

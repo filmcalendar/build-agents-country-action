@@ -5,12 +5,9 @@ inputs:
   country:
     required: true
     description: Country's agents
-  dockerRegistryPassword:
+  githubToken:
     required: true
-    description: Github token
-
-env:
-  GIT_PASSWORD: ${{ secrets.GIT_PASSWORD }}
+    description: Token to be used to install GPR packages and push GHCR images
 
 runs:
   using: composite
@@ -22,7 +19,9 @@ runs:
       shell: bash
     - run: docker build --build-arg GIT_PASSWORD --tag ghcr.io/filmcalendar/fc-agents-${{ inputs.country }}:latest .
       shell: bash
-    - run: echo ${{ inputs.dockerRegistryPassword }} | docker login ghcr.io --username ${{ github.actor }} --password-stdin
+      env:
+        GIT_PASSWORD: ${{ inputs.githubToken }}
+    - run: echo ${{ inputs.githubToken }} | docker login ghcr.io --username ${{ github.actor }} --password-stdin
       shell: bash
     - run: docker push ghcr.io/filmcalendar/fc-agents-${{ inputs.country }}:latest
       shell: bash
