@@ -2,3 +2,5 @@
 package.json
 .npmrc
 .env
+/github-encrypt.js
+/entrypoint.sh

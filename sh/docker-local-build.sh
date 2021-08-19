@@ -12,6 +12,8 @@ agent_dir="../agents-${FC_COUNTRY}"
 
 cp -r "$agent_dir/.bin" .
 cp "$agent_dir/package.json" "$agent_dir/.npmrc" .
+cp docker/entrypoint.sh .
+cp src/github-encrypt.js .
 
 docker build \
   --build-arg GIT_PASSWORD \
@@ -19,5 +21,7 @@ docker build \
     .
 
 rm -rf .bin
-rm -f package.json
-rm -f .npmrc
+rm package.json
+rm .npmrc
+rm entrypoint.sh
+rm github-encrypt.js

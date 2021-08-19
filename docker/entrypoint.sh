@@ -14,6 +14,7 @@ function pull_repo () {
   message=$(curl --silent --user "$auth" "https://api.github.com/repos/filmcalendar/$repo" | jq '.message')
 
   if [[ "$message" = *"Not Found"* ]]; then
+    # generate from template
     curl \
       -X POST \
       --silent \
@@ -21,7 +22,31 @@ function pull_repo () {
       --user "$auth" \
       --header "Accept: application/vnd.github.baptiste-preview+json" \
       https://api.github.com/repos/filmcalendar/data-template/generate \
-      --data "{\"owner\":\"filmcalendar\",\"name\":\"${repo}\"}"
+      --data-raw '{
+        "owner": "filmcalendar",
+        "name": "'"$repo"'" 
+      }'
+
+    # get repo public key
+    github_public_key=$(curl \
+      --silent \
+      --user "$auth" \
+      "https://api.github.com/repos/filmcalendar/$repo/actions/secrets/public-key")
+    github_key_id=$(echo "$github_public_key" | jq -ra .key_id)
+    github_key=$(echo "$github_public_key" | jq -r .key)
+
+    # setup git password as a secret on the repo
+    encrypted_value=$(./github-encrypt.js "$github_key" "$GIT_PASSWORD")
+    curl \
+      -X PUT \
+      --silent \
+      --output /dev/null \
+      --user "$auth" \
+      "https://api.github.com/repos/filmcalendar/$repo/actions/secrets/GIT_PASSWORD" \
+      --data-raw '{
+        "key_id": '"$github_key_id"',
+        "encrypted_value": "'"$encrypted_value"'"
+      }'
 
     git clone "https://${GIT_PASSWORD}@github.com/filmcalendar/${repo}" data
 
@@ -57,7 +82,9 @@ function finish_new_repo_setup () {
       --output /dev/null \
       --user "$auth" \
       "https://api.github.com/repos/filmcalendar/${repo}" \
-      --data "{\"default_branch\":\"json\"}"
+      --data-raw '{
+        "default_branch": "json"
+      }'
 
     # delete main branch
     cd data || exit;
