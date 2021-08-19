@@ -15,7 +15,7 @@ runs:
     - run: |
         cp ${{ github.action_path }}/Dockerfile . |
         cp ${{ github.action_path }}/.dockerignore . |
-        cp ${{ github.action_path }}/fc-agents-init.sh .
+        cp ${{ github.action_path }}/docker/entrypoint.sh .
       shell: bash
     - run: docker build --build-arg GIT_PASSWORD --tag ghcr.io/filmcalendar/fc-agents-${{ inputs.country }}:latest .
       shell: bash
