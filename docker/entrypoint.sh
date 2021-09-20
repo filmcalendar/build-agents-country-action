@@ -24,7 +24,8 @@ function pull_repo () {
       https://api.github.com/repos/filmcalendar/data-template/generate \
       --data-raw '{
         "owner": "filmcalendar",
-        "name": "'"$repo"'" 
+        "name": "'"$repo"'",
+        "private": true 
       }'
 
     # get repo public key
